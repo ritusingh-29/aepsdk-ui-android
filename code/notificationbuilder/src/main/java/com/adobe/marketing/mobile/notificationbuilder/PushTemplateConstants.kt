@@ -92,6 +92,7 @@ object PushTemplateConstants {
 
     object PushPayloadKeys {
         const val TEMPLATE_TYPE = "adb_template_type"
+        const val AJO_TEMPLATE_PROPERTIES = "adb_template_properties"
         const val TITLE = "adb_title"
         const val BODY = "adb_body"
         const val SOUND = "adb_sound"
@@ -196,5 +197,27 @@ object PushTemplateConstants {
         const val IMG = "img"
         const val URI = "uri"
         const val TYPE = "type"
+    }
+
+    // Keys for parsing the adb_template_properties JSON blob for AJO templates.
+    // These are NOT top-level FCM keys — they are keys inside the parsed JSON object.
+    internal object AJOTemplatePropertyKeys {
+        internal const val VERSION    = "adb_version"
+        internal const val TITLE      = "adb_title"
+        internal const val BODY       = "adb_body"
+        internal const val IMAGE      = "adb_image"
+        internal const val LARGE_ICON = "adb_large_icon"
+
+        // Sub-field names shared across nested objects (e.g. adb_title.text, adb_image.url)
+        internal object SubKeys {
+            internal const val TEXT       = "text"
+            internal const val URL        = "url"
+            internal const val SCALE_TYPE = "scale_type"
+        }
+
+        internal object ScaleType {
+            internal const val CENTER_CROP = "center_crop"
+            internal const val FIT_CENTER  = "fit_center"
+        }
     }
 }

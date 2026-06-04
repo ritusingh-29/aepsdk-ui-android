@@ -31,6 +31,8 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductC
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductRatingNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.TimerNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ZeroBezelNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.builders.AJOBasicNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.templates.AJOBasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AEPPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AutoCarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
@@ -219,6 +221,15 @@ object NotificationBuilder {
                     context,
                     MultiIconPushTemplate(notificationData),
                     trackerActivityClass,
+                )
+            }
+
+            PushTemplateType.AJO_BASIC -> {
+                return AJOBasicNotificationBuilder.construct(
+                    context,
+                    AJOBasicPushTemplate(notificationData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
                 )
             }
 
