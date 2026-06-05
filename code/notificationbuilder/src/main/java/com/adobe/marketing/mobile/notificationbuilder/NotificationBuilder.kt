@@ -21,6 +21,8 @@ import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilderConstan
 import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilderConstants.VERSION
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
+import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.builders.AJOBasicNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.templates.AJOBasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.AutoCarouselNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.BasicNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.InputBoxNotificationBuilder
@@ -31,8 +33,6 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductC
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ProductRatingNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.TimerNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ZeroBezelNotificationBuilder
-import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.builders.AJOBasicNotificationBuilder
-import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.templates.AJOBasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AEPPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AutoCarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
