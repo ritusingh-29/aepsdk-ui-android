@@ -18,6 +18,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
+import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.NotificationConstructionFailedException
@@ -57,15 +58,7 @@ internal object AJOBasicNotificationBuilder {
         Log.trace(LOG_TAG, SELF_TAG, "Building an AJO basic template push notification.")
         val packageName = context.packageName
         val smallLayout = RemoteViews(packageName, R.layout.ajo_push_template_collapsed)
-
-        // pick the expanded layout based on the requested image scale type
-        val expandedLayoutId =
-            if (pushTemplate.imgScaleType == AJOTemplatePropertyKeys.ScaleType.FIT_CENTER) {
-                R.layout.ajo_push_template_expanded_fit_center
-            } else {
-                R.layout.ajo_push_template_expanded_center_crop
-            }
-        val expandedLayout = RemoteViews(packageName, expandedLayoutId)
+        val expandedLayout = RemoteViews(packageName, R.layout.ajo_basic_push_template_expanded)
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -77,12 +70,31 @@ internal object AJOBasicNotificationBuilder {
         expandedLayout.setTextViewText(R.id.notification_title, pushTemplate.title)
         expandedLayout.setTextViewText(R.id.notification_body_expanded, pushTemplate.body)
 
-        // set a large icon if one is present
-        smallLayout.setRemoteViewImage(pushTemplate.largeIcon, R.id.large_icon)
-        expandedLayout.setRemoteViewImage(pushTemplate.largeIcon, R.id.large_icon)
+        // set large icon with the correct scale type view, hide the other
+        val largeIconIsFitCenter =
+            pushTemplate.largeIconScaleType == AJOTemplatePropertyKeys.ScaleType.FIT_CENTER
+        val (largeIconVisibleId, largeIconGoneId) = if (largeIconIsFitCenter) {
+            R.id.large_icon_fit_center to R.id.large_icon_center_crop
+        } else {
+            R.id.large_icon_center_crop to R.id.large_icon_fit_center
+        }
+        smallLayout.setViewVisibility(largeIconGoneId, View.GONE)
+        smallLayout.setViewVisibility(largeIconVisibleId, View.VISIBLE)
+        smallLayout.setRemoteViewImage(pushTemplate.largeIcon, largeIconVisibleId)
+        expandedLayout.setViewVisibility(largeIconGoneId, View.GONE)
+        expandedLayout.setViewVisibility(largeIconVisibleId, View.VISIBLE)
+        expandedLayout.setRemoteViewImage(pushTemplate.largeIcon, largeIconVisibleId)
 
-        // set the expanded image (scaled per the layout chosen above)
-        expandedLayout.setRemoteViewImage(pushTemplate.imageUrl, R.id.expanded_template_image)
+        // set the expanded image with the correct scale type view, hide the other
+        val (expandedImageVisibleId, expandedImageGoneId) =
+            if (pushTemplate.imgScaleType == AJOTemplatePropertyKeys.ScaleType.FIT_CENTER) {
+                R.id.expanded_image_fit_center to R.id.expanded_image_center_crop
+            } else {
+                R.id.expanded_image_center_crop to R.id.expanded_image_fit_center
+            }
+        expandedLayout.setViewVisibility(expandedImageGoneId, View.GONE)
+        expandedLayout.setViewVisibility(expandedImageVisibleId, View.VISIBLE)
+        expandedLayout.setRemoteViewImage(pushTemplate.imageUrl, expandedImageVisibleId)
 
         val builder = NotificationCompat.Builder(context, channelIdToUse)
             .setTicker(pushTemplate.ticker)
