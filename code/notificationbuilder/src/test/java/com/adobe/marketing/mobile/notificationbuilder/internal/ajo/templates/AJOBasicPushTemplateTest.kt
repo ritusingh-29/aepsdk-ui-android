@@ -25,6 +25,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOC
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_TEMPLATE_PROPS_NO_SCALE
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_TITLE
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_ACTION_BUTTON_DATA
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_MALFORMED_JSON_ACTION_BUTTON
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
