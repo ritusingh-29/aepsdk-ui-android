@@ -14,6 +14,7 @@ package com.adobe.marketing.mobile.notificationbuilder.internal.ajo.builders
 import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.PushPayloadKeys
@@ -26,6 +27,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOC
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_FLAT_TITLE
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_TEMPLATE_PROPS_FIT_CENTER
+import com.adobe.marketing.mobile.notificationbuilder.internal.util.IntentData
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
 import io.mockk.Runs
 import io.mockk.every
@@ -118,6 +120,68 @@ class AJOBasicNotificationBuilderTest {
                     PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
                     PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
                     PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY
+                )
+            )
+        )
+
+        val result = AJOBasicNotificationBuilder.construct(
+            context, pushTemplate, trackerActivityClass, broadcastReceiverClass
+        )
+
+        assertNotNull(result)
+        assert(result is NotificationCompat.Builder)
+    }
+
+    @Test
+    fun `construct uses silent channel when template is from intent`() {
+        val bundle = Bundle().apply {
+            putString(PushPayloadKeys.TEMPLATE_TYPE, PushTemplateType.AJO_BASIC.value)
+            putString(PushPayloadKeys.TITLE, AJO_MOCKED_FLAT_TITLE)
+            putString(PushPayloadKeys.BODY, AJO_MOCKED_FLAT_BODY)
+            putString(PushPayloadKeys.AJO_TEMPLATE_PROPERTIES, AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP)
+        }
+        val pushTemplate = AJOBasicPushTemplate(IntentData(bundle, null))
+
+        val result = AJOBasicNotificationBuilder.construct(
+            context, pushTemplate, trackerActivityClass, broadcastReceiverClass
+        )
+
+        assertNotNull(result)
+        assert(result is NotificationCompat.Builder)
+    }
+
+    @Test
+    @Config(sdk = [21])
+    fun `construct returns builder on pre-Oreo device`() {
+        val pushTemplate = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
+                    PushPayloadKeys.AJO_TEMPLATE_PROPERTIES to AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP
+                )
+            )
+        )
+
+        val result = AJOBasicNotificationBuilder.construct(
+            context, pushTemplate, trackerActivityClass, broadcastReceiverClass
+        )
+
+        assertNotNull(result)
+        assert(result is NotificationCompat.Builder)
+    }
+
+    @Test
+    fun `construct succeeds with custom sound`() {
+        val pushTemplate = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
+                    PushPayloadKeys.SOUND to "bells",
+                    PushPayloadKeys.AJO_TEMPLATE_PROPERTIES to AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP
                 )
             )
         )

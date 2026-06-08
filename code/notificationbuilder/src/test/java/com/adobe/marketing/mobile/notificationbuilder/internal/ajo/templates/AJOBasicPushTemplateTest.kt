@@ -11,6 +11,7 @@
 
 package com.adobe.marketing.mobile.notificationbuilder.internal.ajo.templates
 
+import com.adobe.marketing.mobile.notificationbuilder.NotificationPriority
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.AJOTemplatePropertyKeys
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
@@ -26,6 +27,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOC
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MOCKED_ACTION_BUTTON_DATA
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.MapData
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -235,5 +237,109 @@ class AJOBasicPushTemplateTest {
             )
         )
         assertNull(template.actionButtonsList)
+    }
+
+    // ── AJOPushTemplate uncovered fields ──────────────────────────────────────
+
+    @Test
+    fun `AJOPushTemplate parses payloadVersion from blob`() {
+        val template = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
+                    PushPayloadKeys.AJO_TEMPLATE_PROPERTIES to AJO_MOCKED_TEMPLATE_PROPS_FIT_CENTER
+                )
+            )
+        )
+        assertEquals("1", template.payloadVersion)
+    }
+
+    @Test
+    fun `AJOPushTemplate defaults payloadVersion to 1 when blob is absent`() {
+        val template = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY
+                )
+            )
+        )
+        assertEquals("1", template.payloadVersion)
+    }
+
+    @Test
+    fun `AJOPushTemplate parses priority from flat key`() {
+        val template = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
+                    PushPayloadKeys.PRIORITY to "PRIORITY_HIGH"
+                )
+            )
+        )
+        assertEquals(NotificationPriority.PRIORITY_HIGH, template.priority)
+    }
+
+    @Test
+    fun `AJOPushTemplate defaults priority to PRIORITY_DEFAULT when absent`() {
+        val template = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY
+                )
+            )
+        )
+        assertEquals(NotificationPriority.PRIORITY_DEFAULT, template.priority)
+    }
+
+    @Test
+    fun `AJOPushTemplate parses templateType as AJO_BASIC`() {
+        val template = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY
+                )
+            )
+        )
+        assertEquals(PushTemplateType.AJO_BASIC, template.templateType)
+    }
+
+    @Test
+    fun `AJOBasicPushTemplate stores raw actionButtonsString`() {
+        val template = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
+                    PushPayloadKeys.ACTION_BUTTONS to MOCKED_ACTION_BUTTON_DATA
+                )
+            )
+        )
+        assertEquals(MOCKED_ACTION_BUTTON_DATA, template.actionButtonsString)
+    }
+
+    @Test
+    fun `AJOBasicPushTemplate skips null action buttons and returns only valid ones`() {
+        val template = AJOBasicPushTemplate(
+            MapData(
+                mutableMapOf(
+                    PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
+                    PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
+                    PushPayloadKeys.ACTION_BUTTONS to MOCKED_MALFORMED_JSON_ACTION_BUTTON
+                )
+            )
+        )
+        assertNotNull(template.actionButtonsList)
     }
 }
