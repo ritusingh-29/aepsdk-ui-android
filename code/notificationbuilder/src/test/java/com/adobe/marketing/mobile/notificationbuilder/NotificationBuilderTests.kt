@@ -37,6 +37,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOC
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_FLAT_TITLE
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_TEMPLATE_PROPS_FIT_CENTER
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockAEPPushTemplateDataProvider
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.CarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockCarousalTemplateDataProvider
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockProductCatalogTemplateDataProvider
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockTimerTemplateDataProvider
@@ -234,6 +235,17 @@ class NotificationBuilderTests {
         val mapData = MockCarousalTemplateDataProvider.getMockedMapWithAutoCarouselData()
         NotificationBuilder.constructNotificationBuilder(mapData, trackerActivityClass, broadcastReceiverClass)
         verify(exactly = 1) { AutoCarouselNotificationBuilder.construct(any(Context::class), any(), trackerActivityClass, broadcastReceiverClass) }
+    }
+
+    @Test
+    fun `verify private createNotificationBuilder falls back to LegacyNotificationBuilder for unknown carousel type`() {
+        mockkObject(CarouselPushTemplate.Companion)
+        val unknownCarousel = mockk<CarouselPushTemplate>(relaxed = true)
+        every { CarouselPushTemplate(any()) } returns unknownCarousel
+
+        val mapData = MockCarousalTemplateDataProvider.getMockedMapWithAutoCarouselData()
+        NotificationBuilder.constructNotificationBuilder(mapData, trackerActivityClass, broadcastReceiverClass)
+        verify(exactly = 1) { LegacyNotificationBuilder.construct(any(Context::class), any(), trackerActivityClass) }
     }
 
     @Test
