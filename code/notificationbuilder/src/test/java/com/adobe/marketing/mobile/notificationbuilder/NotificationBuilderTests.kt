@@ -36,8 +36,8 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ZeroBeze
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_FLAT_BODY
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_FLAT_TITLE
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_TEMPLATE_PROPS_FIT_CENTER
-import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockAEPPushTemplateDataProvider
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.CarouselPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockAEPPushTemplateDataProvider
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockCarousalTemplateDataProvider
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockProductCatalogTemplateDataProvider
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.MockTimerTemplateDataProvider
