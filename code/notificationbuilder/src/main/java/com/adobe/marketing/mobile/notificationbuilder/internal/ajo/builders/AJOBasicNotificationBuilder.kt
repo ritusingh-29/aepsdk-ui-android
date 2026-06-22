@@ -26,7 +26,6 @@ import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.AJOTemplatePropertyKeys
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.R
-import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.templates.AJOBasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.addActionButtons
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.getSoundUriForResourceName
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNotificationClickAction
@@ -34,6 +33,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setNot
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setRemoteViewImage
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setSmallIcon
 import com.adobe.marketing.mobile.notificationbuilder.internal.extensions.setSound
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJOBasicPushTemplate
 import com.adobe.marketing.mobile.services.Log
 
 /**
@@ -70,20 +70,9 @@ internal object AJOBasicNotificationBuilder {
         expandedLayout.setTextViewText(R.id.notification_title, pushTemplate.title)
         expandedLayout.setTextViewText(R.id.notification_body_expanded, pushTemplate.body)
 
-        // set large icon with the correct scale type view, hide the other
-        val largeIconIsFitCenter =
-            pushTemplate.largeIconScaleType == AJOTemplatePropertyKeys.ScaleType.FIT_CENTER
-        val (largeIconVisibleId, largeIconGoneId) = if (largeIconIsFitCenter) {
-            R.id.large_icon_fit_center to R.id.large_icon_center_crop
-        } else {
-            R.id.large_icon_center_crop to R.id.large_icon_fit_center
-        }
-        smallLayout.setViewVisibility(largeIconGoneId, View.GONE)
-        smallLayout.setViewVisibility(largeIconVisibleId, View.VISIBLE)
-        smallLayout.setRemoteViewImage(pushTemplate.largeIcon, largeIconVisibleId)
-        expandedLayout.setViewVisibility(largeIconGoneId, View.GONE)
-        expandedLayout.setViewVisibility(largeIconVisibleId, View.VISIBLE)
-        expandedLayout.setRemoteViewImage(pushTemplate.largeIcon, largeIconVisibleId)
+        // the basic template has no large side icon — hide the container in both layouts
+        smallLayout.setViewVisibility(R.id.large_icon_container, View.GONE)
+        expandedLayout.setViewVisibility(R.id.large_icon_container, View.GONE)
 
         // set the expanded image with the correct scale type view, hide the other
         val (expandedImageVisibleId, expandedImageGoneId) =

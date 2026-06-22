@@ -20,9 +20,9 @@ import androidx.core.app.NotificationCompat
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.PushPayloadKeys
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateImageUtils
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
-import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.templates.AJOBasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.DummyActivity
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.DummyBroadcastReceiver
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJOBasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_FLAT_BODY
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_FLAT_TITLE
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP
@@ -76,6 +76,7 @@ class AJOBasicNotificationBuilderTest {
             MapData(
                 mutableMapOf(
                     PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.VERSION to "1",
                     PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
                     PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
                     PushPayloadKeys.AJO_TEMPLATE_PROPERTIES to AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP
@@ -97,6 +98,7 @@ class AJOBasicNotificationBuilderTest {
             MapData(
                 mutableMapOf(
                     PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.VERSION to "1",
                     PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
                     PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
                     PushPayloadKeys.AJO_TEMPLATE_PROPERTIES to AJO_MOCKED_TEMPLATE_PROPS_FIT_CENTER
@@ -118,6 +120,7 @@ class AJOBasicNotificationBuilderTest {
             MapData(
                 mutableMapOf(
                     PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.VERSION to "1",
                     PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
                     PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY
                 )
@@ -136,6 +139,7 @@ class AJOBasicNotificationBuilderTest {
     fun `construct uses silent channel when template is from intent`() {
         val bundle = Bundle().apply {
             putString(PushPayloadKeys.TEMPLATE_TYPE, PushTemplateType.AJO_BASIC.value)
+            putString(PushPayloadKeys.VERSION, "1")
             putString(PushPayloadKeys.TITLE, AJO_MOCKED_FLAT_TITLE)
             putString(PushPayloadKeys.BODY, AJO_MOCKED_FLAT_BODY)
             putString(PushPayloadKeys.AJO_TEMPLATE_PROPERTIES, AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP)
@@ -157,6 +161,7 @@ class AJOBasicNotificationBuilderTest {
             MapData(
                 mutableMapOf(
                     PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.VERSION to "1",
                     PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
                     PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
                     PushPayloadKeys.AJO_TEMPLATE_PROPERTIES to AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP
@@ -178,6 +183,7 @@ class AJOBasicNotificationBuilderTest {
             MapData(
                 mutableMapOf(
                     PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+                    PushPayloadKeys.VERSION to "1",
                     PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
                     PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
                     PushPayloadKeys.SOUND to "bells",

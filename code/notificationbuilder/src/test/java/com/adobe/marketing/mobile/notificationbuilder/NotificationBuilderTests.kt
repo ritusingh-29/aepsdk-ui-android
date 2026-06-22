@@ -298,6 +298,7 @@ class NotificationBuilderTests {
     fun `verify private createNotificationBuilder calls AJOBasicNotificationBuilder construct`() {
         val mapData = mutableMapOf(
             PushTemplateConstants.PushPayloadKeys.TEMPLATE_TYPE to PushTemplateType.AJO_BASIC.value,
+            PushTemplateConstants.PushPayloadKeys.VERSION to "1",
             PushTemplateConstants.PushPayloadKeys.TITLE to AJO_MOCKED_FLAT_TITLE,
             PushTemplateConstants.PushPayloadKeys.BODY to AJO_MOCKED_FLAT_BODY,
             PushTemplateConstants.PushPayloadKeys.AJO_TEMPLATE_PROPERTIES to AJO_MOCKED_TEMPLATE_PROPS_FIT_CENTER

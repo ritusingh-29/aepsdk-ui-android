@@ -9,13 +9,12 @@
   governing permissions and limitations under the License.
 */
 
-package com.adobe.marketing.mobile.notificationbuilder.internal.ajo.templates
+package com.adobe.marketing.mobile.notificationbuilder.internal.templates
 
 import androidx.annotation.VisibleForTesting
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.AJOTemplatePropertyKeys
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.PushPayloadKeys
-import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.util.NotificationData
 import com.adobe.marketing.mobile.services.Log
 import org.json.JSONArray
@@ -23,21 +22,36 @@ import org.json.JSONException
 import org.json.JSONObject
 
 /**
+ * Parses the raw [adb_template_properties] blob into a [JSONObject], returning null when the blob
+ * is missing or malformed. Shared by the AJO template subclasses.
+ */
+internal fun parseAjoTemplateProperties(raw: String?): JSONObject? {
+    if (raw.isNullOrEmpty()) return null
+    return try {
+        JSONObject(raw)
+    } catch (e: JSONException) {
+        Log.warning(
+            LOG_TAG, "AJOTemplateProperties",
+            "Failed to parse adb_template_properties: ${e.localizedMessage}"
+        )
+        null
+    }
+}
+
+/**
  * Represents the AJO "ajo_basic" push template.
  *
- * Template-specific fields (imgScaleType, largeIconScaleType) are read from the
- * [adb_template_properties] JSON blob parsed by [AJOPushTemplate].
- * Action buttons are read from the flat [adb_act] key, consistent with ACC/AJO handling.
+ * All general fields (title, body, version, image url, icons, sound, action, etc.) are parsed by
+ * [AEPPushTemplate] from the flat top-level FCM keys. The only template-specific field lives in the
+ * [adb_template_properties] blob as the flat [adb_image_scale_type] key. This template has no large
+ * side icon. Action buttons are read from the flat [adb_act] key.
  */
-internal class AJOBasicPushTemplate(data: NotificationData) : AJOPushTemplate(data) {
+internal class AJOBasicPushTemplate(data: NotificationData) : AEPPushTemplate(data) {
 
     private val SELF_TAG = "AJOBasicPushTemplate"
 
     // Scale type for the main expanded image. Defaults to CENTER_CROP.
     internal val imgScaleType: String
-
-    // Scale type for the large icon. Defaults to CENTER_CROP.
-    internal val largeIconScaleType: String
 
     // Optional, action buttons for the notification as a raw string
     internal val actionButtonsString: String?
@@ -46,17 +60,11 @@ internal class AJOBasicPushTemplate(data: NotificationData) : AJOPushTemplate(da
     internal val actionButtonsList: List<BasicPushTemplate.ActionButton>?
 
     init {
-        val props: JSONObject? = parsePropertiesBlob(
+        val props: JSONObject? = parseAjoTemplateProperties(
             data.getString(PushPayloadKeys.AJO_TEMPLATE_PROPERTIES)
         )
 
-        imgScaleType = props?.optJSONObject(AJOTemplatePropertyKeys.IMAGE)
-            ?.optString(AJOTemplatePropertyKeys.SubKeys.SCALE_TYPE)
-            ?.takeIf { it.isNotEmpty() }
-            ?: AJOTemplatePropertyKeys.ScaleType.CENTER_CROP
-
-        largeIconScaleType = props?.optJSONObject(AJOTemplatePropertyKeys.LARGE_ICON)
-            ?.optString(AJOTemplatePropertyKeys.SubKeys.SCALE_TYPE)
+        imgScaleType = props?.optString(AJOTemplatePropertyKeys.IMAGE_SCALE_TYPE)
             ?.takeIf { it.isNotEmpty() }
             ?: AJOTemplatePropertyKeys.ScaleType.CENTER_CROP
 
@@ -91,14 +99,5 @@ internal class AJOBasicPushTemplate(data: NotificationData) : AJOPushTemplate(da
             return null
         }
         return actionButtonList
-    }
-
-    private fun parsePropertiesBlob(raw: String?): JSONObject? {
-        if (raw.isNullOrEmpty()) return null
-        return try {
-            JSONObject(raw)
-        } catch (e: JSONException) {
-            null
-        }
     }
 }
