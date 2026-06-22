@@ -59,6 +59,7 @@ const val MOCKED_CHANNEL_ID = "AEPSDKPushChannel1"
 // AJO template test data. Title, body, image url and version come from flat top-level FCM keys;
 // only template-specific flat keys live inside the adb_template_properties blob.
 const val AJO_MOCKED_IMAGE_URL = "https://example.com/ajo_img.jpg"
+const val AJO_MOCKED_LARGE_ICON_URL = "https://example.com/ajo_icon.png"
 const val AJO_MOCKED_FLAT_TITLE = "AJO Flat Title"
 const val AJO_MOCKED_FLAT_BODY = "AJO Flat Body"
 
@@ -70,6 +71,17 @@ const val AJO_MOCKED_TEMPLATE_PROPS_CENTER_CROP =
     "{\"adb_image_scale_type\":\"center_crop\"}"
 
 const val AJO_MOCKED_TEMPLATE_PROPS_NO_SCALE = "{}"
+
+// AJO bigtext template test data. The flat adb_body holds the expanded text; the blob carries the
+// collapsed text and the large icon url.
+const val AJO_MOCKED_COLLAPSED_TEXT = "AJO Collapsed Body"
+
+const val AJO_MOCKED_BIGTEXT_PROPS_FULL =
+    "{\"adb_collapsed_text\":\"AJO Collapsed Body\"," +
+        "\"adb_large_icon\":\"https://example.com/ajo_icon.png\"}"
+
+const val AJO_MOCKED_BIGTEXT_PROPS_NO_COLLAPSED =
+    "{\"adb_large_icon\":\"https://example.com/ajo_icon.png\"}"
 const val MOCKED_RECEIVER_NAME = "receiverName"
 const val MOCKED_HINT = "hint"
 const val MOCKED_FEEDBACK_TEXT = "feedbackText"
