@@ -22,6 +22,7 @@ import com.adobe.marketing.mobile.notificationbuilder.NotificationBuilderConstan
 import com.adobe.marketing.mobile.notificationbuilder.PushTemplateConstants.LOG_TAG
 import com.adobe.marketing.mobile.notificationbuilder.internal.PushTemplateType
 import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.builders.AJOBasicNotificationBuilder
+import com.adobe.marketing.mobile.notificationbuilder.internal.ajo.builders.AJOBigTextNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.AutoCarouselNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.BasicNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.InputBoxNotificationBuilder
@@ -34,6 +35,7 @@ import com.adobe.marketing.mobile.notificationbuilder.internal.builders.TimerNot
 import com.adobe.marketing.mobile.notificationbuilder.internal.builders.ZeroBezelNotificationBuilder
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AEPPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJOBasicPushTemplate
+import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AJOBigTextPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.AutoCarouselPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.BasicPushTemplate
 import com.adobe.marketing.mobile.notificationbuilder.internal.templates.CarouselPushTemplate
@@ -228,6 +230,15 @@ object NotificationBuilder {
                 return AJOBasicNotificationBuilder.construct(
                     context,
                     AJOBasicPushTemplate(notificationData),
+                    trackerActivityClass,
+                    broadcastReceiverClass
+                )
+            }
+
+            PushTemplateType.AJO_BIG_TEXT -> {
+                return AJOBigTextNotificationBuilder.construct(
+                    context,
+                    AJOBigTextPushTemplate(notificationData),
                     trackerActivityClass,
                     broadcastReceiverClass
                 )
