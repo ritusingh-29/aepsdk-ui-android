@@ -150,7 +150,7 @@ internal sealed class AEPPushTemplate(val data: NotificationData) {
 
     private fun initRequiredValues() {
 
-        payloadVersion = data.getRequiredString(PushPayloadKeys.VERSION)
+//        payloadVersion = data.getRequiredString(PushPayloadKeys.VERSION)
 
         // extract the remaining text information
         if (templateType == PushTemplateType.MULTI_ICON) {
